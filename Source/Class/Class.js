@@ -4,7 +4,7 @@
 name: Class
 
 description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
-
+//描述：文件包含新建、继承、实现等可复用的类
 license: MIT-style license.
 
 requires: [Array, String, Function, Number]
@@ -13,7 +13,6 @@ provides: Class
 
 ...
 */
-
 (function(){
 
 var Class = this.Class = new Type('Class', function(params){

@@ -4,7 +4,7 @@
 name: Core
 
 description: The heart of MooTools.
-
+//Mootools的核心，提供Mootools自定义的类和操作
 license: MIT-style license.
 
 copyright: Copyright (c) 2006-2014 [Valerio Proietti](http://mad4milk.net/).
@@ -20,32 +20,43 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 ...
 */
 /*! MooTools: the javascript framework. license: MIT-style license. copyright: Copyright (c) 2006-2014 [Valerio Proietti](http://mad4milk.net/).*/
+/*1.整体是一个自执行函数，格式：(function(){})();*/
 (function(){
-
+/*2.这里的this是指浏览器对象Window*/
 this.MooTools = {
 	version: '1.5.2-dev',
 	build: '%build%'
-};
+}
 
 // typeOf, instanceOf
-
+/*3.重写Window的typeof元操作符，是ECMAScript保留的关键字,并声明并赋值变量typeOf*/
 var typeOf = this.typeOf = function(item){
 	if (item == null) return 'null';
+/*4.isFinite() 函数用于检查其参数是否是无穷大。
+如果 number 是有限数字（或可转换为有限数字），那么返回 true。否则，如果 number 是 NaN（非数字），或者是正、负无穷大的数，则返回 false。*/
 	if (item.$family != null) return item.$family();
 
 	if (item.nodeName){
 		if (item.nodeType == 1) return 'element';
-		if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
+		if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';//(/\S/).test()查找是否有非空白字符
 	} else if (typeof item.length == 'number'){
+/*5.判断对象是否为数组/对象的元素/属性：
+格式：（变量 in 对象）
+当“对象”为数组时，“变量”指的是数组的“索引”；
+当“对象”为对象是，“变量”指的是对象的“属性”。
+另：for(变量 in 对象),用于遍历数组或者对象的属性（对数组或者对象的属性进行循环操作）。*/
+/*6. callee为arguments对象的一个属性*/
 		if ('callee' in item) return 'arguments';
+/*7.item为数组或者集合的一个属性*/
 		if ('item' in item) return 'collection';
 	}
 
 	return typeof item;
 };
-
+/*8.重写Window的instanceOf元操作符，是ECMAScript保留的关键字*/
 var instanceOf = this.instanceOf = function(item, object){
 	if (item == null) return false;
+/**/
 	var constructor = item.$constructor || item.constructor;
 	while (constructor){
 		if (constructor === object) return true;
@@ -301,7 +312,6 @@ Date.extend('now', function(){
 new Type('Boolean', Boolean);
 
 // fixes NaN returning as Number
-
 Number.prototype.$family = function(){
 	return isFinite(this) ? 'number' : 'null';
 }.hide();
